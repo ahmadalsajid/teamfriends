@@ -22,7 +22,7 @@ def send_birthday_greetings():
             except Exception as e:
                 ic(e)
                 print('###############################################################')
-                print('Sender email not configured, printing the email boy in the console instead')
+                print('Sender email not configured, printing the email body in the console instead')
                 print(f'Email subject: {email.subject}')
                 print(f'Email body: {email.body}')
 

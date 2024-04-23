@@ -4,7 +4,28 @@ Interview round 2 for the position of Tech Lead | RC-TL-310324
 
 ## Method One: cronjob ##
 
-In this method, we will set a cronjob that will trigger in a set interval to execute a [cronjob](/customers/cron.py). This is achieved using [django-crontab](https://pypi.org/project/django-crontab/) for managing the cronjob. The function will search for the customers with the birthdays that day and send them an email. If it fails to do so, for example, no Gmail account is associated with this application, then it will print the email subject and body in the CLI. In our current configuratoin, we have set this interval to 1 minute for test purpose. If we want to run the cron job everyday at 00:01 AM, we need to change the line from `('*/1 * * * *', 'customers.cron.send_birthday_greetings', '> /proc/1/fd/1 2>&1')` to `('1 0 * * *', 'customers.cron.send_birthday_greetings', '> /proc/1/fd/1 2>&1')` in line 176 in [this file](/teamfriends/settings.py).
+In this method, we will set a cronjob that will trigger in a set interval to
+execute a [cronjob](/customers/cron.py). This is achieved using
+[django-crontab](https://pypi.org/project/django-crontab/) for managing the
+cronjob. The function will search for the customers with the birthdays that
+day and email them. If it fails to do so, for example, no Gmail
+account is associated with this application, then it will print the email
+subject and body in the CLI. In our current configuration, we have set this
+interval to 1 minute for test purpose. If we want to run the cron job
+everyday at 00:01 AM, we need to change the line from
+
+ ```bash
+ ('*/1 * * * *', 'customers.cron.send_birthday_greetings', '> /proc/1/fd/1 2>&1')
+ ```
+
+ to
+
+```bash
+('1 0 * * *', 'customers.cron.send_birthday_greetings', '> /proc/1/fd/1 2>&1')
+ ```
+
+in line [176](https://gitlab.com/ahmadalsajid/teamfriends/-/blob/cron/teamfriends/settings.py?ref_type=heads&blame=1#L176)
+in [this file](/teamfriends/settings.py).
 
 For example,
 
@@ -20,7 +41,9 @@ team_friends  | Email body: Dear customer 1, happy birthday to you.
 
 ## Run the project ##  
 
-You need to have docker installed on your machine for testing the application easily. To install Docker on your machine, please follow the official documentation from [Docker](https://docs.docker.com/engine/install/).
+You need to have docker installed on your machine for testing the application
+easily. To install Docker on your machine, please follow the official
+documentation from [Docker](https://docs.docker.com/engine/install/).
 
 After that, clone this repository to your machine.
 
@@ -28,9 +51,15 @@ After that, clone this repository to your machine.
 git clone https://gitlab.com/ahmadalsajid/teamfriends.git
 ```
 
-**[Optional]** If you want to test sending email using Gmail, follow the document to configure your Gmail API auth setting from the [Google documentation](https://developers.google.com/gmail/api/quickstart/python). If not configured, the `send email` function will log and error mentioning it can not connect to Google SMTP server and print the Email **subject** and **body** in the console
+**[Optional]** If you want to test sending email using Gmail, follow the
+document to configure your Gmail API auth setting from the
+[Google documentation](https://developers.google.com/gmail/api/quickstart/python).
+If not configured, the `send email` function will log and error mentioning it
+can not connect to Google SMTP server and print the email
+**subject** and **body** in the console
 
-Now, create a `.env` file with the below secrets in the project root [**Feel free to use your own**].
+Now, create a `.env` file with the below secrets in the project
+root [**Feel free to use your own**].
 
 ```bash
 DJANGO_SUPERUSER_EMAIL="sajid@mail.com"
@@ -42,23 +71,30 @@ EMAIL_HOST_USER=""
 EMAIL_HOST_PASSWORD=""
 ```
 
-We are ready to test our API to create customers. Just run the below command to spin up a docker container locally.
+We are ready to test our API to create customers. Just run the below command
+to spin up a docker container locally.
 
-```commandline
+```bash
 docker compose up -d
 ```
 
-Once the container is up, you can use <http://localhost:8000/admin/> to access the Django admin panel using the username and password provided in the `.env` file.
+Once the container is up, you can use <http://localhost:8000/admin/> to access
+the Django admin panel using the username and password provided in the `.env` file.
+
 ![login page](/screenshots/admin_login.png)
 
-Also, you can use the admin panel to list/edit the customer from the UI at <http://localhost:8000/admin/customers/customer/>.
+Also, you can use the admin panel to list/edit the customer from the UI at
+<http://localhost:8000/admin/customers/customer/>.
+
 ![Customer list](/screenshots/list_customers.png)
 
-Also, there are two APIs available, one to obtain the JWT token for authorisation, another one to add customers to the application.
+Also, there are two APIs available, one to obtain the JWT token for
+authorisation, another one to add customers to the application.
 
 ### Login API ###
 
-Make a `POST` request to <http://localhost:8000/api/customer/login/> with the user credential from [Postman](https://www.postman.com/) or similar tool. i.e.
+Make a `POST` request to <http://localhost:8000/api/customer/login/> with the
+user credential from [Postman](https://www.postman.com/) or similar tool. i.e.
 
 ```bash
 POST http://localhost:8000/api/customer/login/
@@ -86,7 +122,8 @@ Content-Type: application/json; charset=utf-8
 
 ### Create customer API ###
 
-Make a `POST` request to <http://localhost:8000/api/customer/register/> with the customer data and the `JWT token` in the Authorization header.
+Make a `POST` request to <http://localhost:8000/api/customer/register/> with
+the customer data and the `JWT token` in the Authorization header.
 
 ```bash
 POST http://localhost:8000/api/customer/register/
@@ -115,3 +152,7 @@ Content-Type: application/json; charset=utf-8
 ```
 
 ![Postman create customer API](/screenshots/create_customer.png)
+
+Finally, we are done here. We just need to input new customer data in our
+system, the rest will be handled by the cron job to send the customers
+with a birthday greetings on their birthdays.
