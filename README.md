@@ -27,6 +27,9 @@ docker compose up -d
 Once the container is up, you can use http://localhost:8000/admin/ to access the Django admin panel using the username and password provided in the `.env` file.
 ![login page](/screenshots/admin_login.png)
 
+Also, you can use the admin panel to list/edit the customer from the UI at http://localhost:8000/admin/customers/customer/.
+![Customer list](/screenshots/list_customers.png)
+
 Also, there are two APIs available, one to obtain the JWT token for authorisation, another one to add customers to the application.
 
 ### Login API ###
