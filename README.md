@@ -52,3 +52,32 @@ Content-Type: application/json; charset=utf-8
 }
 ```
 ![Postman login API](/screenshots/login_api.png)
+
+### Create customer API ###
+
+Make a `POST` request to http://localhost:8000/api/customer/register/ with the customer data and the `JWT token` in the Authorization header.
+```bash
+POST http://localhost:8000/api/customer/register/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1
+{
+    "name": "customer 1",
+    "email": "customer_1@mail.com",
+    "date_of_birth": "2023-03-31"
+}
+```
+You will get the response in a JSON format
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    "data": {
+        "id": 1,
+        "name": "customer 1",
+        "email": "customer_1@mail.com",
+        "date_of_birth": "2023-03-31"
+    }
+}
+```
+![Postman create customer API](/screenshots/create_customer.png)
+

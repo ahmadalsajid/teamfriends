@@ -25,6 +25,7 @@ class CreateCustomerView(APIView):
         _data = request.data
         _customer = {
             "name": _data.get("name"),
+            "email": _data.get("email"),
             "date_of_birth": _data.get("date_of_birth")
         }
 
