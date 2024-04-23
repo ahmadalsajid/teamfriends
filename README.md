@@ -5,7 +5,7 @@ Interview round 2 for the position of Tech Lead | RC-TL-310324
 ## Method One: cronjob ##
 
 In this method, we will set a cronjob that will trigger in a set interval to
-execute a [cronjob](/customers/cron.py). This is achieved using
+execute a [function](/customers/cron.py). This is achieved using
 [django-crontab](https://pypi.org/project/django-crontab/) for managing the
 cronjob. The function will search for the customers with the birthdays that
 day and email them. If it fails to do so, for example, no Gmail
