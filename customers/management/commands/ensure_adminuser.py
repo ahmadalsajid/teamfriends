@@ -1,3 +1,4 @@
+from icecream import ic
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
@@ -14,12 +15,11 @@ class Command(BaseCommand):
         try:
             _user = get_user_model()
             if not _user.objects.filter(username=options['username']).exists():
-                print('here in create_superuser')
+                ic(f'creating superuser {options["username"]}')
                 _created = _user.objects.create_superuser(username=options['username'],
                                                           email=options['email'],
                                                           password=options['password'])
-                print(_created)
             else:
-                print('user already exists')
+                ic('superuser already exists')
         except Exception as e:
-            print(e)
+            ic(e)
