@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    container_name: team_friends
+    volumes:
+      - .:/code
+    environment:
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+    ports:
+      - "8000:8000"
