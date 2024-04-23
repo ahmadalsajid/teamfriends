@@ -14,6 +14,26 @@ After that, clone this repository to your machine.
 git clone https://gitlab.com/ahmadalsajid/teamfriends.git
 ```
 
+**[Optional]** If you want to test sending email using Gmail, follow the
+document to configure your Gmail API auth setting from the
+[Google documentation](https://developers.google.com/gmail/api/quickstart/python).
+If not configured, the `send email` function will log and error mentioning it
+can not connect to Google SMTP server and print the
+email **subject** and **body** in the console.
+
+Now, create a `.env` file with the below secrets in the project root
+[**Please replace with your own credentials**].
+
+```bash
+DJANGO_SUPERUSER_EMAIL="sajid@mail.com"
+DJANGO_SUPERUSER_USERNAME="sajid"
+DJANGO_SUPERUSER_PASSWORD="1qweqwe23"
+
+DEFAULT_FROM_EMAIL=""
+EMAIL_HOST_USER=""
+EMAIL_HOST_PASSWORD=""
+```
+
 We will be creating a simple DRF application with two APIs, one to retrieve the
 users `JWT Token`, another one to create the customer with their name, email
 and date of birth. This is the first part of the challenge. This is pretty
@@ -33,23 +53,7 @@ instructions to build the project with docker and the testing instructions there
 git checkout cron
 ```
 
-
-
-
-
-**[Optional]** If you want to test sending email using Gmail, follow the document to configure your Gmail API auth setting from the [Google documentation](https://developers.google.com/gmail/api/quickstart/python). If not configured, the `send email` function will log and error mentioning it can not connect to Google SMTP server and print the Email **subject** and **body** in the console
-
-Now, create a `.env` file with the below secrets in the project root [**Please replace with your own credentials**].
-
-```bash
-DJANGO_SUPERUSER_EMAIL="sajid@mail.com"
-DJANGO_SUPERUSER_USERNAME="sajid"
-DJANGO_SUPERUSER_PASSWORD="1qweqwe23"
-
-DEFAULT_FROM_EMAIL=""
-EMAIL_HOST_USER=""
-EMAIL_HOST_PASSWORD=""
-```
+## DRF App only ##
 
 We are ready to test our API to create customers. Just run the below command to spin up a docker container locally.
 
@@ -124,3 +128,6 @@ Content-Type: application/json; charset=utf-8
 ```
 
 ![Postman create customer API](/screenshots/create_customer.png)
+If you are in the `main` branch of this repository, you will only get the APIs
+for login/create customer. You must checkout to `cron` or `schedular` branches
+for the second part of the task.
