@@ -10,4 +10,10 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ]; then
     --password="$DJANGO_SUPERUSER_PASSWORD"
 fi
 
+# add cronjob to send birthday greetings to the customers
+python manage.py crontab remove
+python manage.py crontab add
+python manage.py crontab show
+service cron start
+
 $@
