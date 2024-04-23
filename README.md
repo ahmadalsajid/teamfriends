@@ -17,7 +17,7 @@ git clone https://gitlab.com/ahmadalsajid/teamfriends.git
 **[Optional]** If you want to test sending email using Gmail, follow the
 document to configure your Gmail API auth setting from the
 [Google documentation](https://developers.google.com/gmail/api/quickstart/python).
-If not configured, the `send email` function will log and error mentioning it
+If not configured, the `send email` function will log an error mentioning it
 can not connect to Google SMTP server and print the
 email **subject** and **body** in the console.
 
@@ -51,6 +51,18 @@ instructions to build the project with docker and the testing instructions there
 
 ```bash
 git checkout cron
+```
+
+The second method would be using a `Distributed Task Queue` i.e.
+[Celery](https://docs.celeryq.dev/en/stable/index.html) and
+[Redis](https://redis.io/) or [RabbitMQ](https://www.rabbitmq.com/)
+as the broker. For this, we have another branch of this repository named
+[schedular](https://gitlab.com/ahmadalsajid/teamfriends/-/tree/schedular). 
+The README.md file will instruct you to build the project with docker 
+and the testing using Celery and RabbitMQ.
+
+```bash
+git checkout schedular
 ```
 
 ## DRF App only ##
