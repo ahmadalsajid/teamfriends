@@ -34,6 +34,9 @@ EMAIL_HOST_USER=""
 EMAIL_HOST_PASSWORD=""
 ```
 
+> :warning: **Timezone in UTC**: Please be aware that the application 
+ will be working according to the UTC timezone. 
+
 We will be creating a simple DRF application with two APIs, one to retrieve the
 users `JWT Token`, another one to create the customer with their name, email
 and date of birth. This is the first part of the challenge. This is pretty
