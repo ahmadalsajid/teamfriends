@@ -1,6 +1,9 @@
 from icecream import ic
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):

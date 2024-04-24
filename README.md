@@ -7,6 +7,19 @@ Interview round 2 for the position of Tech Lead | RC-TL-310324
 In this method, we will set a Celery and rabbitmq, rest is after setup
 
 
+```bash
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] Invalid address 
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] "
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] "
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] '
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] )
+celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] Sender email not configured, printing the email boy in the console instead
+celery-worker  | [2024-04-24 12:16:02,685: INFO/ForkPoolWorker-8] Email subject: Happy birthday Customer 3
+celery-worker  | [2024-04-24 12:16:02,685: INFO/ForkPoolWorker-8] Email body: Dear Customer 3, happy birthday to you.
+celery-worker  | [2024-04-24 12:16:02,688: INFO/ForkPoolWorker-8] Task customers.tasks.send_birthday_email_greetings[01ca04a8-766a-48c4-9d4b-8ac1564cedb0] succeeded in 2.6789230850008607s: None
+
+```
+
 
 ## Run the project ##  
 

@@ -5,9 +5,6 @@ services:
     container_name: rabbitmq
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
-    ports:
-      - 5672:5672
-      - 15672:15672
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_USER=guest
@@ -26,8 +23,6 @@ services:
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    ports:
-      - 8000:8000
     network_mode: host
     depends_on:
       - rabbitmq
@@ -35,6 +30,7 @@ services:
   celery-worker:
     build: .
     command: celery -A teamfriends worker -l info
+    container_name: celery-worker
     restart: always
     volumes:
       - .:/code
@@ -48,10 +44,12 @@ services:
     network_mode: host
     depends_on:
       - rabbitmq
+      - api
 
   celery-beat:
     build: .
     command: celery -A teamfriends beat -l info
+    container_name: celery-beat
     restart: always
     volumes:
       - .:/code
@@ -65,6 +63,7 @@ services:
     network_mode: host
     depends_on:
       - rabbitmq
+      - api
 
 volumes:
   rabbitmq_data:

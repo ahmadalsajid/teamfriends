@@ -174,10 +174,11 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 BROKER_URL = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@localhost:5672/')
-
+CELERY_ENABLE_UTC = True
 CELERY_BEAT_SCHEDULE = {  # scheduler configuration
     'send_birthday_email_greetings': {  # the task name you want
         'task': 'customers.tasks.send_birthday_email_greetings',  # name of task with path
-        'schedule': crontab(minute='*/1'),  # crontab() runs the tasks every minute
+        'schedule': crontab(minute='*/1'),  # crontab() runs the task every minute
+        # 'schedule': crontab(minute='1', hour='0'),  # crontab(minute='1', hour='0') runs the task everyday at 00:01 am
     },
 }
