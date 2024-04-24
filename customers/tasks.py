@@ -26,7 +26,7 @@ def send_birthday_email_greetings():
                 logger.info(email.body)
             except Exception as e:
                 ic(e)
-                logger.warning('Sender email not configured, printing the email boy in the console instead')
+                logger.warning('Sender email not configured, printing the email body in the console instead')
                 logger.info(f'Email subject: {email.subject}')
                 logger.info(f'Email body: {email.body}')
 

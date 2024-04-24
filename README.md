@@ -126,3 +126,9 @@ system, the rest will be handled by the task schedular to send the customers
 with a birthday greetings on their birthdays. You will get the emails if you
 have configured a Gmail to be used with this application, or the results in the
 container logs as an alternate.
+
+When you are done with testing, remove the docker container and images using
+```bash
+docker compose down -v --rmi local
+```
+This will help you clean up your docker builds and test the other option.
