@@ -2,6 +2,9 @@ from icecream import ic
 from datetime import date
 from django.core.mail import EmailMessage
 from customers.models import Customer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def send_birthday_greetings():
@@ -18,13 +21,13 @@ def send_birthday_greetings():
                 _email_subject, _email_body, None, [f'{_user.email}'])
             try:
                 email.send()
-                print(email.body)
+                logger.info(email.body)
             except Exception as e:
                 ic(e)
-                print('###############################################################')
-                print('Sender email not configured, printing the email body in the console instead')
-                print(f'Email subject: {email.subject}')
-                print(f'Email body: {email.body}')
+                logger.info('###############################################################')
+                logger.info('Sender email not configured, printing the email body in the console instead')
+                logger.info(f'Email subject: {email.subject}')
+                logger.info(f'Email body: {email.body}')
 
     except Exception as e:
         ic(e)
