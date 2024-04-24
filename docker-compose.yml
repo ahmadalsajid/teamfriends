@@ -1,18 +1,24 @@
 services:
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
-    restart: always
     container_name: rabbitmq
+    hostname: rabbitmq
+    restart: always
     volumes:
       - "rabbitmq_data:/var/lib/rabbitmq"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-    network_mode: host
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - friends
 
   api:
     build: .
-    container_name: team_friends
+    container_name: api
+    hostname: api
     restart: always
     volumes:
       - .:/code
@@ -23,14 +29,19 @@ services:
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    network_mode: host
+      - RABBITMQ_URL='amqp://guest:guest@rabbitmq:5672/'
+    ports:
+      - 8000:8000
     depends_on:
       - rabbitmq
+    networks:
+      - friends
 
   celery-worker:
     build: .
-    command: celery -A teamfriends worker -l info
     container_name: celery-worker
+    hostname: celery-worker
+    command: celery -A teamfriends worker -l info
     restart: always
     volumes:
       - .:/code
@@ -41,15 +52,17 @@ services:
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    network_mode: host
+      - RABBITMQ_URL='amqp://guest:guest@rabbitmq:5672/'
     depends_on:
       - rabbitmq
-      - api
+    networks:
+      - friends
 
   celery-beat:
     build: .
-    command: celery -A teamfriends beat -l info
     container_name: celery-beat
+    hostname: celery-beat
+    command: celery -A teamfriends beat -l info
     restart: always
     volumes:
       - .:/code
@@ -60,10 +73,15 @@ services:
       - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    network_mode: host
+      - RABBITMQ_URL='amqp://guest:guest@rabbitmq:5672/'
     depends_on:
       - rabbitmq
-      - api
+    networks:
+      - friends
+
+networks:
+  friends:
+    driver: bridge
 
 volumes:
   rabbitmq_data:
