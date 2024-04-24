@@ -4,8 +4,12 @@ Interview round 2 for the position of Tech Lead | RC-TL-310324
 
 ## Method Two: Task schedular ##
 
-In this method, we will set a Celery and rabbitmq, rest is after setup
-
+In this method, we will set Celery for task scheduling and RabbitMQ as the
+message broker. We have created a [function](/customers/tasks.py) which will
+search for the customers with the birthdays that day and email them. If it
+fails to do so, for example, no Gmail account is associated with this
+application, then it will print the email subject and body in the CLI.
+For example,
 
 ```bash
 celery-worker  | [2024-04-24 12:16:02,684: WARNING/ForkPoolWorker-8] Invalid address 
@@ -20,17 +24,22 @@ celery-worker  | [2024-04-24 12:16:02,688: INFO/ForkPoolWorker-8] Task customers
 
 ```
 
+To achieve this, we will have four main containers, `api`, `celery-worker`,
+`celery-beat`, & `rabbitmq`. The first three containers will be built from
+the same [directory](./), and the last one we will pull the image from docker
+hub. Everything is configured in the [docker-compose.yml](/docker-compose.yml)
+file, so you will need to do nothing here.
 
 ## Run the project ##  
 
 We are ready to test our API to create customers. Just run the below command
-to spin up a docker container locally.
+to spin up the docker containers locally.
 
 ```bash
-docker compose up -d
+docker compose up
 ```
 
-Once the container is up, you can use <http://localhost:8000/admin/> to access
+Once the containers are up, you can use <http://localhost:8000/admin/> to access
 the Django admin panel using the username and password provided in the `.env` file.
 
 ![login page](/screenshots/admin_login.png)
@@ -106,7 +115,7 @@ Content-Type: application/json; charset=utf-8
 ![Postman create customer API](/screenshots/create_customer.png)
 
 Finally, we are done here. We just need to input new customer data in our
-system, the rest will be handled by the cron job to send the customers
+system, the rest will be handled by the task schedular to send the customers
 with a birthday greetings on their birthdays. You will get the emails if you
 have configured a Gmail to be used with this application, or the results in the
-container logs as an alternate. 
+container logs as an alternate.
