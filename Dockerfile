@@ -7,7 +7,7 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY . /code/
 
-ENTRYPOINT ["bash", "create-superuser.sh"]
+ENTRYPOINT ["bash", "docker-entrypoint.sh"]
 
 EXPOSE 8000
 

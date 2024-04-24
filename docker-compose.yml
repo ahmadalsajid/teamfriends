@@ -1,12 +1,70 @@
 services:
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    restart: always
+    container_name: rabbitmq
+    volumes:
+      - "rabbitmq_data:/var/lib/rabbitmq"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_USER=guest
+    network_mode: host
+
   api:
     build: .
     container_name: team_friends
+    restart: always
     volumes:
       - .:/code
     environment:
       - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
       - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
       - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     ports:
-      - "8000:8000"
+      - 8000:8000
+    network_mode: host
+    depends_on:
+      - rabbitmq
+
+  celery-worker:
+    build: .
+    command: celery -A teamfriends worker -l info
+    restart: always
+    volumes:
+      - .:/code
+    environment:
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    network_mode: host
+    depends_on:
+      - rabbitmq
+
+  celery-beat:
+    build: .
+    command: celery -A teamfriends beat -l info
+    restart: always
+    volumes:
+      - .:/code
+    environment:
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    network_mode: host
+    depends_on:
+      - rabbitmq
+
+volumes:
+  rabbitmq_data:

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+from celery.schedules import crontab
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_simplejwt',
     "corsheaders",
+    "celery",
 ]
 
 MIDDLEWARE = [
@@ -122,7 +124,6 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -171,3 +172,12 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+BROKER_URL = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@localhost:5672/')
+
+CELERY_BEAT_SCHEDULE = {  # scheduler configuration
+    'send_birthday_email_greetings': {  # the task name you want
+        'task': 'customers.tasks.send_birthday_email_greetings',  # name of task with path
+        'schedule': crontab(minute='*/1'),  # crontab() runs the tasks every minute
+    },
+}
