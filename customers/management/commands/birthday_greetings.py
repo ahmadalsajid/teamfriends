@@ -3,6 +3,9 @@ from datetime import date
 from django.core.mail import EmailMessage
 from django.core.management.base import BaseCommand
 from customers.models import Customer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -22,11 +25,12 @@ class Command(BaseCommand):
                     _email_subject, _email_body, None, [f'{_user.email}'])
                 try:
                     email.send()
+                    logger.info(email.body)
                 except Exception as e:
                     ic(e)
-                    print('Sender email not configured, printing the email boy in the console instead')
-                    print(f'Email subject: {email.subject}')
-                    print(f'Email body: {email.body}')
+                    logger.info('Sender email not configured, printing the email boy in the console instead')
+                    logger.info(f'Email subject: {email.subject}')
+                    logger.info(f'Email body: {email.body}')
 
         except Exception as e:
             ic(e)
