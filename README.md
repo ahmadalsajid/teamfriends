@@ -147,3 +147,8 @@ Content-Type: application/json; charset=utf-8
 If you are in the `main` branch of this repository, you will only get the APIs
 for login/create customer. You must check out to `cron` or `schedular` branches
 for the second part of the task.
+
+when you are done testing, clear your docker container and images using
+```bash
+docker compose down --rmi local
+```
