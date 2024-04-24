@@ -30,6 +30,13 @@ the same [directory](./), and the last one we will pull the image from docker
 hub. Everything is configured in the [docker-compose.yml](/docker-compose.yml)
 file, so you will need to do nothing here.
 
+For ease of testing, we have configured the task schedular to send the
+greetings every minute. If you want to update the time, i.e. send the
+greetings everyday at 00:01 AM UTC, just comment out line
+[181](https://gitlab.com/ahmadalsajid/teamfriends/-/blob/schedular/teamfriends/settings.py?ref_type=heads&blame=1#L181) and uncomment
+[182](https://gitlab.com/ahmadalsajid/teamfriends/-/blob/schedular/teamfriends/settings.py?ref_type=heads&blame=1#L182)
+in the [settings.py](/teamfriends/settings.py) file.
+
 ## Run the project ##  
 
 We are ready to test our API to create customers. Just run the below command

@@ -7,7 +7,7 @@ services:
       - "rabbitmq_data:/var/lib/rabbitmq"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     network_mode: host
 
   api:
