@@ -4,4 +4,5 @@ from customers.views import CreateCustomerView, LoginView
 urlpatterns = [
     path("login/", LoginView.as_view()),
     path("register/", CreateCustomerView.as_view()),
+    path("customers/", CreateCustomerView.as_view()),
 ]

@@ -21,6 +21,17 @@ class LoginView(TokenObtainPairView):
 
 class CreateCustomerView(APIView):
 
+    def get(self, request):
+        _data = request.data
+        _customers = Customer.objects.all()
+        _customer_serializer = CustomerSerializer(_customers, many=True)
+        return Response(
+            {
+                "data": _customer_serializer.data
+            },
+            status=status.HTTP_201_CREATED
+        )
+       
     def post(self, request):
         _data = request.data
         _customer = {

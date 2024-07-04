@@ -2,6 +2,7 @@ services:
   api:
     build: .
     container_name: team_friends
+    command: gunicorn --workers=3 --timeout=120 --worker-class=gevent --bind 0.0.0.0:8000 teamfriends.wsgi --reload
     volumes:
       - .:/code
     environment:
